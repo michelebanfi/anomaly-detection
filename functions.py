@@ -22,6 +22,12 @@ def TSNEPlot(dist_matrix, path, labels):
     sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=colors, palette=localPalette)
     plt.savefig(path)
 
+# call the gridSearchDBSCAN method to find the best parameters for the DBSCAN clustering algorithm
+# eps = [0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.05]
+# min_samples = [2, 3, 4, 5, 6, 7, 9, 11, 15, 20]
+# best_eps, best_min_samples, best_score = gridSearchDBSCAN(dist_matrix, min_samples, eps)
+# print(best_eps, best_min_samples, best_score)
+
 # create a method to perform a grid search for DBSCAN with gower distance in order to obtain the best parameters for the
 # clustering algorithm. Uisng the silhouette score as the metric to evaluate the performance of the clustering algorithm.
 def gridSearchDBSCAN(dist_matrix, min_samples, eps):
