@@ -1,3 +1,4 @@
+import gower
 import pandas as pd
 from sklearn.manifold import TSNE
 import seaborn as sns
@@ -13,14 +14,19 @@ def loadDataset():
     dataset = dataset.iloc[:, 1:-2]
     return dataset
 
-def TSNEPlot(dist_matrix, path, labels):
+def TSNEPlot(dataset, labels):
+    dist_matrix = gower.gower_matrix(dataset)
     tsne = TSNE(n_components=2, verbose=0, perplexity=20, n_iter=300, metric="precomputed", init='random')
     tsne_results = tsne.fit_transform(dist_matrix)
 
-    colors = ['anomaly' if label == -1 else 'normal' for label in labels]
-    localPalette = ['green', 'red']
-    sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=colors, palette=localPalette)
-    plt.savefig(path)
+    # get the uniques labels
+    # unique_labels = list(set(labels))
+    # colors = []m,
+    # for label in labels:
+    #     colors.append(PAL[unique_labels.index(label)])
+    # hue=labels, palette=PAL
+    sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette=PAL)
+    plt.show()
 
 # call the gridSearchDBSCAN method to find the best parameters for the DBSCAN clustering algorithm
 # eps = [0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.05]
