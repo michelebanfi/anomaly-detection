@@ -30,8 +30,9 @@ def performGMMAnomalyDetection(dataset, components, nu):
     # get the threshold
     threshold = np.percentile(minMahalanobis, 100 - nu*100)
     # get the outliers
-    outliers = np.where(minMahalanobis > threshold)
 
-
-    print("[GMM] Founded", len(outliers[0]), "outliers")
+    outliers = np.zeros(len(dataset))
+    outliers[minMahalanobis > threshold] = -1
+    num_outliers = len(outliers[outliers == -1])
+    print("[GMM] Founded", num_outliers, "outliers")
     return outliers
