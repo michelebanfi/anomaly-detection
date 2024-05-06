@@ -52,5 +52,4 @@ def gridSearchDBSCAN(dist_matrix, min_samples, eps):
                 best_eps = eps
                 best_min_samples = sample
     plt.plot(silhouette_scores)
-    plt.savefig('silhouette_scores.png')
     return best_eps, best_min_samples, best_score

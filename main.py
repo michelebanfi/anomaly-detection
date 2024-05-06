@@ -1,6 +1,7 @@
 import pandas as pd
 
 from GMM import performGMMAnomalyDetection
+from descriptive import descrptiveStats
 from forest import performIsolationForestAnomalyDetection
 from functions import loadDataset, TSNEPlot
 from lof import performLOFAnomalyDetection
@@ -10,6 +11,9 @@ from dbscan import performDBSCANAnomalyDetection
 
 # DBSCAN with Gower distance
 dataset = loadDataset()
+
+# description of the dataset
+descrptiveStats(dataset)
 
 nu = 0.03
 
@@ -42,10 +46,6 @@ df = pd.DataFrame({
 df["Outliers"] = ((df["DBSCAN"] == -1).astype(int) + (df["SVM"] == -1).astype(int) +
                   (df["IsolationForest"] == -1).astype(int) + (df["LOF"] == -1).astype(int)) + (df["GMM"] == -1).astype(int)
 df["Outliers"] = df["Outliers"] / 5
-
-# plot the column
-# plt.plot(df["Outliers"])
-# plt.savefig("outliers.png")
 
 # plot the t-SNE plot
 TSNEPlot(dataset, df["Outliers"])
