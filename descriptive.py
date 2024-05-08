@@ -11,4 +11,4 @@ def descrptiveStats(dataset):
 
     # plot the scatter matrix of the dataset
     print("[SCATTER MATRIX]")
-    pd.plotting.scatter_matrix(dataset, figsize=(40, 40))
+    # pd.plotting.scatter_matrix(dataset, figsize=(40, 40))

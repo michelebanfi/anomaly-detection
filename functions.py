@@ -16,18 +16,14 @@ def loadDataset():
 
 def TSNEPlot(dataset, labels):
     dist_matrix = gower.gower_matrix(dataset)
-    tsne = TSNE(n_components=2, verbose=0, perplexity=20, n_iter=300, metric="precomputed", init='random')
+    tsne = TSNE(n_components=2, verbose=0, perplexity=20, n_iter=1000, metric="precomputed", init='random')
     tsne_results = tsne.fit_transform(dist_matrix)
 
-    # get the uniques labels
-    # unique_labels = list(set(labels))
-    # colors = []m,
-    # for label in labels:
-    #     colors.append(PAL[unique_labels.index(label)])
-    # hue=labels, palette=PAL
-    sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette=PAL)
-    plt.show()
-
+    # create a big figure
+    plt.figure(figsize=(20, 15))
+    sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette=PAL, legend='full')
+    plt.savefig("tsne.png")
+    plt.close()
 # call the gridSearchDBSCAN method to find the best parameters for the DBSCAN clustering algorithm
 # eps = [0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.05]
 # min_samples = [2, 3, 4, 5, 6, 7, 9, 11, 15, 20]

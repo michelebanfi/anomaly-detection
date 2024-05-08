@@ -8,4 +8,5 @@ def performDBSCANAnomalyDetection(dataset):
     labels = db.labels_
     print("[DBSCAN] Number of clusters: ", len(set(labels)) - (1 if -1 in labels else 0))
     print("[DBSCAN] Founded", len(np.where(labels == -1)[0]), "outliers")
+    labels = np.where(labels == -1, -1, 0)
     return labels
