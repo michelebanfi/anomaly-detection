@@ -1,9 +1,11 @@
 import pandas as pd
+from matplotlib import pyplot as plt
 
 from GMM import performGMMAnomalyDetection
+from PCA import performPCAAnomalyDetection
 from descriptive import descrptiveStats
 from forest import performIsolationForestAnomalyDetection
-from functions import loadDataset, TSNEPlot
+from functions import loadDataset, TSNEPlot, randScore
 from knee import performNNKNEEAnomalyDetection
 from lof import performLOFAnomalyDetection
 
@@ -40,6 +42,9 @@ gmmLabels = performGMMAnomalyDetection(dataset, 11, nu)
 # KNEE Outlier Detection
 kneeLabels = performNNKNEEAnomalyDetection(dataset, neighborhood_order)
 
+# PCA Outlier Detection
+pcaLabels = performPCAAnomalyDetection(dataset, 6)
+
 # create a dataframe with the labels
 df = pd.DataFrame({
     "DBSCAN": dbscanLabels,
@@ -48,8 +53,11 @@ df = pd.DataFrame({
     "IsolationForest": forestLabels,
     "LOF": lofLabels,
     "GMM": gmmLabels,
-    "KNEE": kneeLabels
+    "KNEE": kneeLabels,
+    "PCA": pcaLabels
 })
+
+randScore(df)
 
 # create a new column where we insert the mean of outliers per row
 df["Outliers"] = df.mean(axis=1).round(2).abs()
@@ -60,11 +68,19 @@ TSNEPlot(dataset, df["Outliers"])
 
 df.to_csv("outliers.csv", index=False)
 
-# normalize the occurrencies of outliers
-normalizedOutliers = df["Outliers"].value_counts(normalize=True)
+fig, axs = plt.subplots(2, figsize=(20, 20))
 
+# Plot histogram
+axs[0].hist(df['Outliers'], bins=7, density=True)
+axs[0].set_title('Outliers')
+axs[0].set_xlabel('Outliers')
+axs[0].set_ylabel('Frequency')
 
-# plot the normalized histogram of the outliers
-ax = normalizedOutliers.plot.hist(bins=20, alpha=0.5, title="Outliers Histogram")
-fig = ax.get_figure()
-fig.savefig("histogram.png")
+# Plot pie chart
+levels = set(df['Outliers'])
+sizes = [len(df[df['Outliers'] == level]) for level in levels]
+axs[1].pie(sizes, labels=levels, autopct='%1.1f%%')
+
+plt.tight_layout()
+plt.savefig("media/outliersFrequency.png")
+plt.close()
