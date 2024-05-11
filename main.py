@@ -78,6 +78,6 @@ df.to_csv("outliers.csv", index=False)
 plotOutliersFrequency(df)
 
 # print the number of instances that are not considered outliers by any algorithm
-print("Found that ", len(df[df["Outliers"] == 0]),
-      "are not considered outliers by any algorithm. Corresponding to the",
-      np.round(len(dataset) / len(df[df["Outliers"] == 0]))), "% of the dataset."
+print("Found that", len(df[df["Outliers"] == 0]),
+      "observations are not considered outliers by any algorithm. Corresponding to the",
+      np.round((len(df[df["Outliers"] == 0]) / len(dataset)) * 100, 2), "% of the dataset.")
