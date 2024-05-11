@@ -9,7 +9,7 @@ def performPCAAnomalyDetection(dataset, NCOMPONENTS):
     gower_dist_matrix = gower_matrix(dataset)
 
     # Perform PCA
-    pca = PCA(n_components=6)
+    pca = PCA(n_components=NCOMPONENTS)
     pca_results = pca.fit_transform(gower_dist_matrix)
 
     # print PCA explained variance ratio
@@ -21,22 +21,19 @@ def performPCAAnomalyDetection(dataset, NCOMPONENTS):
 
     # Identify outliers using RE
     i = np.arange(len(RE))
-    knee = KneeLocator(i, np.sort(RE), S=1, curve='convex', direction='increasing',
-                       interp_method='polynomial')
 
-    knee_x = knee.knee
-    knee_y = knee.knee_y
+    # knee point founded visually
+    knee_y = 1.27
 
     threshold = knee_y
     outliers = np.where(RE > threshold)
-    print('[PCA] found %d' % len(outliers[0]))
+    print('[PCA - THRESHOLD] founded', len(outliers[0]), "outliers")
     pcaLabels = np.zeros(len(dataset))
     pcaLabels[outliers] = -1
 
     from scipy.stats import chi2
     alpha = 0.99
     chi2_th = chi2.ppf(alpha, NCOMPONENTS)
-    print('Chi2 threshold: %.2f' % chi2_th)
 
     # Identify the outliers
     pcaLabelsChi = np.zeros(len(dataset))
@@ -45,7 +42,7 @@ def performPCAAnomalyDetection(dataset, NCOMPONENTS):
         if np.sum(pca_results[i, :] ** 2 / lambdas) > chi2_th:
             pcaLabelsChi[i] = -1
 
-    print('Number of outliers (chi2): %d' % len(np.where(pcaLabelsChi == -1)[0]))
+    print('[PCA - CHI2] founded', len(np.where(pcaLabelsChi == -1)[0]), "outliers")
 
     return pcaLabelsChi
 

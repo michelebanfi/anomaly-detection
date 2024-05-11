@@ -13,13 +13,15 @@ def performNNKNEEAnomalyDetection(dataset, neighborhood_order=10):
     knee = KneeLocator(i, np.sort(distances[:, -1]), S=1, curve='convex', direction='increasing',
                        interp_method='polynomial')
 
-    knee_x = knee.knee  # x coordinate of the knee point
-    knee_y = knee.knee_y  # y coordinate of the knee point
+    # x coordinate of the knee point
+    knee_x = knee.knee
+    # y coordinate of the knee point
+    knee_y = knee.knee_y
 
     print('[KNEE] The estimated best eps value is = %.2f' % knee_y, knee_x)
 
     outliers = np.where(distances[:, neighborhood_order - 1] > 1.5)[0]
-    print('[KNEE] Number of outliers: %d' % len(outliers))
+    print('[KNEE] Founded', len(outliers), "outliers")
 
     # Assign labels
     kneeLabels = np.zeros(len(dataset))

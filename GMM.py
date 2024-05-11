@@ -4,13 +4,13 @@ from sklearn.preprocessing import OneHotEncoder
 
 
 def performGMMAnomalyDetection(dataset, components, nu):
-    categorical_columns = list(range(1, 16))  # Colonne dalla 1 alla 15 che sono categoriche
-    continuous_columns = [0] + list(range(16, 21))  # Prima colonna e colonne dalla 16 alla 20
+    categorical_columns = list(range(1, 16))  # Categorical attributes
+    continuous_columns = [0] + list(range(16, 21))  # Continuos attributes
 
     encoder = OneHotEncoder()
     encoded_categorical = encoder.fit_transform(dataset.iloc[:, categorical_columns])
 
-    # Concatenazione delle variabili categoriche e continue
+    # Attributes concatenation
     processed_dataset = np.concatenate((encoded_categorical.toarray(), dataset.iloc[:, continuous_columns].values),
                                        axis=1)
 
@@ -18,8 +18,10 @@ def performGMMAnomalyDetection(dataset, components, nu):
     gmm.fit_predict(processed_dataset)
     means = gmm.means_
     covariances = gmm.covariances_
-    N = len(processed_dataset) # get the number of samples
-    K = len(means) # get the number of components
+    # get the number of samples
+    N = len(processed_dataset)
+    # get the number of components
+    K = len(means)
 
     # get the minkowski distance
     minkowski = np.zeros((N, K))
@@ -31,7 +33,7 @@ def performGMMAnomalyDetection(dataset, components, nu):
             minkowski[j, i] = np.sqrt(np.dot(np.dot((processed_dataset[j] - mean).T, np.linalg.inv(cov)),
                                             (processed_dataset[j] - mean)))
 
-    # get the minimum mahalanobis distance
+    # get the minimum minkowski distance
     minMinkowski = np.min(minkowski, axis=1)
     # get the threshold
     threshold = np.percentile(minMinkowski, 100 - nu * 100)

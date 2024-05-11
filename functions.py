@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.manifold import TSNE
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.metrics import silhouette_score, rand_score
+from sklearn.metrics import silhouette_score, rand_score, adjusted_rand_score
 from sklearn.cluster import DBSCAN
 
 PAL = ['green', 'blue', 'yellow', 'orange', 'purple', 'magenta', 'cyan', 'brown', 'black', 'red']
@@ -25,14 +25,7 @@ def TSNEPlot(dataset, labels):
     sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette=PAL, legend='full')
     plt.savefig("media/tsne.png")
     plt.close()
-# call the gridSearchDBSCAN method to find the best parameters for the DBSCAN clustering algorithm
-# eps = [0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.05]
-# min_samples = [2, 3, 4, 5, 6, 7, 9, 11, 15, 20]
-# best_eps, best_min_samples, best_score = gridSearchDBSCAN(dist_matrix, min_samples, eps)
-# print(best_eps, best_min_samples, best_score)
 
-# create a method to perform a grid search for DBSCAN with gower distance in order to obtain the best parameters for the
-# clustering algorithm. Uisng the silhouette score as the metric to evaluate the performance of the clustering algorithm.
 def gridSearchDBSCAN(dist_matrix, min_samples, eps):
     silhouette_scores = []
     best_score = -1
@@ -68,16 +61,33 @@ def randScore(dataframe):
             labels2 = dataframe[cols[j]]
             # calculate the rand score
             rand_matrix[i, j] = rand_score(labels1, labels2)
-            print("Rand score between", cols[i], "and", cols[j], "is", rand_matrix[i, j])
-
 
     # plot the rand matrix with the labels of the algorithms
+    plt.figure(figsize=(20, 15))
     sns.heatmap(rand_matrix, annot=True, xticklabels=cols, yticklabels=cols)
     plt.savefig("media/rand_matrix.png")
     plt.close()
 
+def plotOutliersFrequency(df):
+    print("Calculating the rand matrix...")
+    # remove from the Outliers column the value 0
+    df = df[df["Outliers"] != 0]
 
+    fig, axs = plt.subplots(2, figsize=(20, 20))
 
+    # Plot histogram
+    axs[0].hist(df['Outliers'], bins=7, density=True)
+    axs[0].set_title('Outliers')
+    axs[0].set_xlabel('Outliers')
+    axs[0].set_ylabel('Frequency')
 
+    # Plot pie chart
+    levels = set(df['Outliers'])
+    sizes = [len(df[df['Outliers'] == level]) for level in levels]
+    axs[1].pie(sizes, labels=levels, autopct='%1.1f%%')
+
+    plt.tight_layout()
+    plt.savefig("media/outliersFrequency.png")
+    plt.close()
 
 

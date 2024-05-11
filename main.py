@@ -1,30 +1,33 @@
+import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-
 from GMM import performGMMAnomalyDetection
 from PCA import performPCAAnomalyDetection
 from descriptive import descrptiveStats
 from forest import performIsolationForestAnomalyDetection
-from functions import loadDataset, TSNEPlot, randScore
+from functions import loadDataset, TSNEPlot, randScore, plotOutliersFrequency
+from kde import performKDEAnomalyDetection
 from knee import performNNKNEEAnomalyDetection
 from lof import performLOFAnomalyDetection
-
 from svm import performSVMAnomalyDetectionOneHotEncoder, performSVMAnomalyDetectionGower
 from dbscan import performDBSCANAnomalyDetection
 
-# DBSCAN with Gower distance
+# Load the dataset
 dataset = loadDataset()
 
 # description of the dataset
-descrptiveStats(dataset)
+# descrptiveStats(dataset)
 
+# Percentage of outliers
 nu = 0.05
+
+# neighborhood order of different algorithms
 neighborhood_order = 10
 
 # perform dbscan anomaly detection
-dbscanLabels = performDBSCANAnomalyDetection(dataset)
+dbscanLabels = performDBSCANAnomalyDetection(dataset, neighborhood_order)
 
-# perform svm anomaly detection
+# perform svm anomaly detection with one hot encoder
 svmLabelsOneHotEncode = performSVMAnomalyDetectionOneHotEncoder(dataset, nu)
 
 # perform svm anomaly detection with gower distance
@@ -45,6 +48,8 @@ kneeLabels = performNNKNEEAnomalyDetection(dataset, neighborhood_order)
 # PCA Outlier Detection
 pcaLabels = performPCAAnomalyDetection(dataset, 6)
 
+kdeLabels = performKDEAnomalyDetection(dataset, nu)
+
 # create a dataframe with the labels
 df = pd.DataFrame({
     "DBSCAN": dbscanLabels,
@@ -54,7 +59,8 @@ df = pd.DataFrame({
     "LOF": lofLabels,
     "GMM": gmmLabels,
     "KNEE": kneeLabels,
-    "PCA": pcaLabels
+    "PCA": pcaLabels,
+    "KDE": kdeLabels
 })
 
 randScore(df)
@@ -68,19 +74,10 @@ TSNEPlot(dataset, df["Outliers"])
 
 df.to_csv("outliers.csv", index=False)
 
-fig, axs = plt.subplots(2, figsize=(20, 20))
+# plot the frequency of outliers
+plotOutliersFrequency(df)
 
-# Plot histogram
-axs[0].hist(df['Outliers'], bins=7, density=True)
-axs[0].set_title('Outliers')
-axs[0].set_xlabel('Outliers')
-axs[0].set_ylabel('Frequency')
-
-# Plot pie chart
-levels = set(df['Outliers'])
-sizes = [len(df[df['Outliers'] == level]) for level in levels]
-axs[1].pie(sizes, labels=levels, autopct='%1.1f%%')
-
-plt.tight_layout()
-plt.savefig("media/outliersFrequency.png")
-plt.close()
+# print the number of instances that are not considered outliers by any algorithm
+print("Found that ", len(df[df["Outliers"] == 0]),
+      "are not considered outliers by any algorithm. Corresponding to the",
+      np.round(len(dataset) / len(df[df["Outliers"] == 0]))), "% of the dataset."
