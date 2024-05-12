@@ -101,3 +101,32 @@ def plotOutliersFrequency(df):
     plt.close()
 
 
+import pandas as pd
+
+
+def pandas_to_typst(df):
+    #USAGE: print(pandas_to_typst(df))
+
+    typst_text = "\n#table(\n"
+
+    # Get number of columns
+    num_columns = len(df.columns)
+    typst_text += f"  columns: {num_columns},\n"
+
+    # Get column names
+    typst_text += "  "
+    for col in df.columns:
+        typst_text += f"[*{col}*], "
+    typst_text = typst_text[:-2] + ",\n"
+
+    # Get values
+    for index, row in df.iterrows():
+        typst_text += "  "
+        for value in row:
+            typst_text += f"[{value}], "
+        typst_text = typst_text[:-2] + ",\n"
+
+    typst_text += ") \n"
+
+    return typst_text
+
