@@ -6,7 +6,7 @@ from PCA import performPCAAnomalyDetection
 from descriptive import descrptiveStats
 from forest import performIsolationForestAnomalyDetection
 from functions import loadDataset, TSNEPlot, randScore, plotOutliersFrequency
-from kde import performKDEAnomalyDetection
+from kde import performKDEAnomalyDetection, performKDEAnomalyDetectionOneHotEncoder
 from knee import performNNKNEEAnomalyDetection
 from lof import performLOFAnomalyDetection
 from svm import performSVMAnomalyDetectionOneHotEncoder, performSVMAnomalyDetectionGower
@@ -31,7 +31,7 @@ dbscanLabels = performDBSCANAnomalyDetection(dataset, neighborhood_order)
 svmLabelsOneHotEncode = performSVMAnomalyDetectionOneHotEncoder(dataset, nu)
 
 # perform svm anomaly detection with gower distance
-svmLabelsGower = performSVMAnomalyDetectionGower(dataset, nu)
+# svmLabelsGower = performSVMAnomalyDetectionGower(dataset, nu)
 
 # IsolationForest
 forestLabels = performIsolationForestAnomalyDetection(dataset, nu)
@@ -48,19 +48,24 @@ kneeLabels = performNNKNEEAnomalyDetection(dataset, neighborhood_order)
 # PCA Outlier Detection
 pcaLabels = performPCAAnomalyDetection(dataset, 6)
 
-kdeLabels = performKDEAnomalyDetection(dataset, nu)
+# KDE Outlier Detection
+#kdeLabels = performKDEAnomalyDetection(dataset, nu)
+
+# KDE Outlier Detection with OneHotEncoder
+kdeOneHotEncoderLabels = performKDEAnomalyDetectionOneHotEncoder(dataset,nu)
 
 # create a dataframe with the labels
 df = pd.DataFrame({
     "DBSCAN": dbscanLabels,
     "SVMOneHotEncode": svmLabelsOneHotEncode,
-    "SVMGower": svmLabelsGower,
+    #"SVMGower": svmLabelsGower,
     "IsolationForest": forestLabels,
     "LOF": lofLabels,
     "GMM": gmmLabels,
     "KNEE": kneeLabels,
     "PCA": pcaLabels,
-    "KDE": kdeLabels
+    #"KDE": kdeLabels,
+    "KDEOneHotEncoder": kdeOneHotEncoderLabels
 })
 
 randScore(df)

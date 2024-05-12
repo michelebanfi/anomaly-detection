@@ -22,7 +22,7 @@ def TSNEPlot(dataset, labels):
 
     # create a big figure
     plt.figure(figsize=(20, 15))
-    sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette=PAL, legend='full')
+    sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette="magma", legend='full')
     plt.savefig("media/tsne.png")
     plt.close()
 
@@ -47,6 +47,7 @@ def gridSearchDBSCAN(dist_matrix, min_samples, eps):
 
 
 def randScore(dataframe):
+    print("Calculating the rand matrix...")
     # calculate the rand score of multiple algorithms saved in columns of a pandas dataframe
     # get the number of columns
     cols = dataframe.columns
@@ -64,25 +65,25 @@ def randScore(dataframe):
 
     # plot the rand matrix with the labels of the algorithms
     plt.figure(figsize=(20, 15))
-    sns.heatmap(rand_matrix, annot=True, xticklabels=cols, yticklabels=cols)
+    sns.heatmap(rand_matrix, annot=True, xticklabels=cols, yticklabels=cols, cmap="magma")
     plt.savefig("media/rand_matrix.png")
     plt.close()
 
 def plotOutliersFrequency(df):
-    print("Calculating the rand matrix...")
     # remove from the Outliers column the value 0
     df = df[df["Outliers"] != 0]
+
+    levels = set(df['Outliers'])
 
     fig, axs = plt.subplots(2, figsize=(20, 20))
 
     # Plot histogram
-    axs[0].hist(df['Outliers'], bins=7, density=True)
+    axs[0].hist(df['Outliers'], bins=len(levels), density=True)
     axs[0].set_title('Outliers')
     axs[0].set_xlabel('Outliers')
     axs[0].set_ylabel('Frequency')
 
     # Plot pie chart
-    levels = set(df['Outliers'])
     sizes = [len(df[df['Outliers'] == level]) for level in levels]
     axs[1].pie(sizes, labels=levels, autopct='%1.1f%%')
 
