@@ -11,7 +11,7 @@ PAL = ['green', 'blue', 'yellow', 'orange', 'purple', 'magenta', 'cyan', 'brown'
 
 def loadDataset():
     # Load dataset
-    dataset = pd.read_csv('dataset.csv', sep=";", decimal=",")
+    dataset = pd.read_csv('../Data/dataset.csv', sep=";", decimal=",")
     dataset = dataset.iloc[:, 1:-2]
     return dataset
 
@@ -23,7 +23,7 @@ def TSNEPlot(dataset, labels):
     # create a big figure
     plt.figure(figsize=(20, 15))
     sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette="magma", legend='full')
-    plt.savefig("media/tsne.png")
+    plt.savefig("Media/tsne.png")
     plt.close()
 
 def gridSearchDBSCAN(dist_matrix, min_samples, eps):
@@ -66,7 +66,7 @@ def randScore(dataframe):
     # plot the rand matrix with the labels of the algorithms
     plt.figure(figsize=(20, 15))
     sns.heatmap(rand_matrix, annot=True, xticklabels=cols, yticklabels=cols, cmap="magma")
-    plt.savefig("media/rand_matrix.png")
+    plt.savefig("Media/rand_matrix.png")
     plt.close()
 
 def plotOutliersFrequency(df):
@@ -88,7 +88,7 @@ def plotOutliersFrequency(df):
     axs[1].pie(sizes, labels=levels, autopct='%1.1f%%')
 
     plt.tight_layout()
-    plt.savefig("media/outliersFrequency.png")
+    plt.savefig("Media/outliersFrequency.png")
     plt.close()
 
 

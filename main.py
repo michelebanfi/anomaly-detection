@@ -1,16 +1,14 @@
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
-from GMM import performGMMAnomalyDetection
-from PCA import performPCAAnomalyDetection
-from descriptive import descrptiveStats
-from forest import performIsolationForestAnomalyDetection
-from functions import loadDataset, TSNEPlot, randScore, plotOutliersFrequency
-from kde import performKDEAnomalyDetection, performKDEAnomalyDetectionOneHotEncoder
-from knee import performNNKNEEAnomalyDetection
-from lof import performLOFAnomalyDetection
-from svm import performSVMAnomalyDetectionOneHotEncoder, performSVMAnomalyDetectionGower
-from dbscan import performDBSCANAnomalyDetection
+from Methods.GMM import performGMMAnomalyDetection
+from Methods.PCA import performPCAAnomalyDetection
+from Methods.forest import performIsolationForestAnomalyDetection
+from Utils.functions import loadDataset, TSNEPlot, randScore, plotOutliersFrequency
+from Methods.kde import performKDEAnomalyDetectionOneHotEncoder
+from Methods.knee import performNNKNEEAnomalyDetection
+from Methods.lof import performLOFAnomalyDetection
+from Methods.svm import performSVMAnomalyDetectionOneHotEncoder
+from Methods.dbscan import performDBSCANAnomalyDetection
 
 # Load the dataset
 dataset = loadDataset()
