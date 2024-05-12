@@ -1,3 +1,4 @@
+import os
 import gower
 import numpy as np
 import pandas as pd
@@ -10,8 +11,16 @@ from sklearn.cluster import DBSCAN
 PAL = ['green', 'blue', 'yellow', 'orange', 'purple', 'magenta', 'cyan', 'brown', 'black', 'red']
 
 def loadDataset():
+    path = ""
+    # if we are on Windows path is "Data/dataset.csv"
+    if os.name == 'nt':
+        path = "Data/dataset.csv"
+    else:
+        path = "../Data/dataset.csv"
+
+    print("Working directory: ", os.getcwd())
     # Load dataset
-    dataset = pd.read_csv('../Data/dataset.csv', sep=";", decimal=",")
+    dataset = pd.read_csv(path, sep=";", decimal=",")
     dataset = dataset.iloc[:, 1:-2]
     return dataset
 
@@ -22,7 +31,7 @@ def TSNEPlot(dataset, labels):
 
     # create a big figure
     plt.figure(figsize=(20, 15))
-    sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette="magma", legend='full')
+    sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette="magma_r", legend='full')
     plt.savefig("Media/tsne.png")
     plt.close()
 

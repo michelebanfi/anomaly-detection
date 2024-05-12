@@ -3,6 +3,7 @@ import pandas as pd
 from Methods.GMM import performGMMAnomalyDetection
 from Methods.PCA import performPCAAnomalyDetection
 from Methods.forest import performIsolationForestAnomalyDetection
+from Utils.descriptive import descriptiveStats
 from Utils.functions import loadDataset, TSNEPlot, randScore, plotOutliersFrequency
 from Methods.kde import performKDEAnomalyDetectionOneHotEncoder
 from Methods.knee import performNNKNEEAnomalyDetection
@@ -14,7 +15,7 @@ from Methods.dbscan import performDBSCANAnomalyDetection
 dataset = loadDataset()
 
 # description of the dataset
-# descrptiveStats(dataset)
+descriptiveStats(dataset)
 
 # Percentage of outliers
 nu = 0.05
@@ -46,9 +47,6 @@ kneeLabels = performNNKNEEAnomalyDetection(dataset, neighborhood_order)
 # PCA Outlier Detection
 pcaLabels = performPCAAnomalyDetection(dataset, 6)
 
-# KDE Outlier Detection
-#kdeLabels = performKDEAnomalyDetection(dataset, nu)
-
 # KDE Outlier Detection with OneHotEncoder
 kdeOneHotEncoderLabels = performKDEAnomalyDetectionOneHotEncoder(dataset,nu)
 
@@ -62,7 +60,6 @@ df = pd.DataFrame({
     "GMM": gmmLabels,
     "KNEE": kneeLabels,
     "PCA": pcaLabels,
-    #"KDE": kdeLabels,
     "KDEOneHotEncoder": kdeOneHotEncoderLabels
 })
 
