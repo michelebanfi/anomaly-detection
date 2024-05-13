@@ -11,14 +11,8 @@ from sklearn.cluster import DBSCAN
 PAL = ['green', 'blue', 'yellow', 'orange', 'purple', 'magenta', 'cyan', 'brown', 'black', 'red']
 
 def loadDataset():
-    path = ""
-    # if we are on Windows path is "Data/dataset.csv"
-    if os.name == 'nt':
-        path = "Data/dataset.csv"
-    else:
-        path = "../Data/dataset.csv"
+    path = "Data/dataset.csv"
 
-    print("Working directory: ", os.getcwd())
     # Load dataset
     dataset = pd.read_csv(path, sep=";", decimal=",")
     dataset = dataset.iloc[:, 1:-2]

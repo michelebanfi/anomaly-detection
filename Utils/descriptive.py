@@ -13,7 +13,7 @@ def descriptiveStats(dataset):
         if column.endswith("=0"):
             # plot the histogram of the column
             plt.subplot(5, 5, list(dataset.columns).index(column))
-            sns.histplot(dataset[column], color='blue', bins=2)
+            sns.histplot(dataset[column], bins=2)
             plt.title(column)
     plt.savefig("Media/binaryDistribution.png")
     plt.close()
@@ -25,10 +25,23 @@ def descriptiveStats(dataset):
         if not column.endswith("=0"):
             # plot the boxplot of the column
             plt.subplot(3, 3, counter)
-            sns.boxplot(y=dataset[column], color='blue')
+            sns.boxplot(y=dataset[column])
             plt.title(column)
             counter += 1
-    plt.savefig("Media/continuousDistribution.png")
+    plt.savefig("Media/continuousDistributionBoxPlot.png")
+    plt.close()
+
+    # plot the continuos variables distribution
+    plt.figure(figsize=(15, 15))
+    counter = 1
+    for column in dataset.columns:
+        if not column.endswith("=0"):
+            # plot the distribution of the column
+            plt.subplot(3, 3, counter)
+            sns.histplot(dataset[column], kde=True)
+            plt.title(column)
+            counter += 1
+    plt.savefig("Media/continuousDistributionGaussian.png")
     plt.close()
 
     # plot the scatter matrix of the dataset
