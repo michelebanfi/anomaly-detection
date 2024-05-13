@@ -25,7 +25,7 @@ def TSNEPlot(dataset, labels):
 
     # create a big figure
     plt.figure(figsize=(20, 15))
-    sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette="magma_r", legend='full')
+    sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette="plasma_r", legend='full')
     plt.savefig("Media/tsne.png")
     plt.close()
 
