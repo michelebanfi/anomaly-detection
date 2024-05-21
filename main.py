@@ -56,9 +56,9 @@ df = pd.DataFrame({
     "SVMOneHotEncode": svmLabelsOneHotEncode,
     #"SVMGower": svmLabelsGower,
     "IsolationForest": forestLabels,
-    "LOF": lofLabels,
+    #"LOF": lofLabels,
     #"GMM": gmmLabels,
-    "KNEE": kneeLabels,
+    #"KNEE": kneeLabels,
     "PCA": pcaLabels,
     "KDEOneHotEncoder": kdeOneHotEncoderLabels
 })

@@ -89,7 +89,7 @@ def plotOutliersFrequency(df):
 
     # Plot pie chart
     sizes = [len(df[df['Outliers'] == level]) for level in levels]
-    palette = palette = sns.color_palette("magma_r", len(levels) + 2)
+    palette = sns.color_palette("magma_r", len(levels) + 2)
     palette = palette[:-1]
     axs[1].pie(sizes, labels=levels, autopct='%1.1f%%', colors=palette)
 
