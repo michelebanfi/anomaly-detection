@@ -25,6 +25,7 @@ def TSNEPlot(dataset, labels):
     # create a big figure
     plt.figure(figsize=(20, 15))
     sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette="plasma_r", legend='full')
+    plt.tight_layout()
     plt.savefig("Media/tsne.png")
     plt.close()
 
@@ -68,6 +69,7 @@ def randScore(dataframe):
     # plot the rand matrix with the labels of the algorithms
     plt.figure(figsize=(20, 15))
     sns.heatmap(rand_matrix, annot=True, xticklabels=cols, yticklabels=cols, cmap="magma")
+    plt.tight_layout()
     plt.savefig("Media/rand_matrix.png")
     plt.close()
 
@@ -87,14 +89,13 @@ def plotOutliersFrequency(df):
 
     # Plot pie chart
     sizes = [len(df[df['Outliers'] == level]) for level in levels]
-    axs[1].pie(sizes, labels=levels, autopct='%1.1f%%', colors = sns.color_palette('magma_r', len(levels)))
+    palette = palette = sns.color_palette("magma_r", len(levels) + 2)
+    palette = palette[:-1]
+    axs[1].pie(sizes, labels=levels, autopct='%1.1f%%', colors=palette)
 
     plt.tight_layout()
     plt.savefig("Media/outliersFrequency.png")
     plt.close()
-
-
-import pandas as pd
 
 
 def pandas_to_typst(df):

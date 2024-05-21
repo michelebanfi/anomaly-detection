@@ -72,7 +72,7 @@ df["Outliers"] = df.mean(axis=1).round(2).abs()
 # plot the t-SNE plot
 TSNEPlot(dataset, df["Outliers"])
 
-df.to_csv("outliers.csv", index=False)
+df.to_csv("Data/outliers.csv", index=False)
 
 # plot the frequency of outliers
 plotOutliersFrequency(df)

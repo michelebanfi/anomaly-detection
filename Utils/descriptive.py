@@ -14,6 +14,7 @@ def descriptiveStats(dataset):
             plt.subplot(5, 5, list(dataset.columns).index(column))
             sns.histplot(dataset[column], bins=2)
             plt.title(column)
+    plt.tight_layout()
     plt.savefig("Media/binaryDistribution.png")
     plt.close()
 
@@ -27,6 +28,7 @@ def descriptiveStats(dataset):
             sns.boxplot(y=dataset[column])
             plt.title(column)
             counter += 1
+    plt.tight_layout()
     plt.savefig("Media/continuousDistributionBoxPlot.png")
     plt.close()
 
@@ -40,6 +42,7 @@ def descriptiveStats(dataset):
             sns.histplot(dataset[column], kde=True)
             plt.title(column)
             counter += 1
+    plt.tight_layout()
     plt.savefig("Media/continuousDistributionGaussian.png")
     plt.close()
 
