@@ -12,10 +12,17 @@ from Methods.svm import performSVMAnomalyDetectionOneHotEncoder, performSVMAnoma
 from Methods.dbscan import performDBSCANAnomalyDetection
 
 # Load the dataset
-dataset = loadDataset()
+dataset = pd.read_csv('Data/benchmark.csv', sep =";", decimal=",")
+dataset = dataset.iloc[:, :-2]
+labels = dataset.iloc[:, -1]
+dataset = dataset.iloc[:, :-1]
+# scale the last 5 columns of the dataset to the interval [0,1]
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+dataset.iloc[:, -5:] = scaler.fit_transform(dataset.iloc[:, -5:])
 
 # description of the dataset
-descriptiveStats(dataset)
+# descriptiveStats(dataset)
 
 # Percentage of outliers
 nu = 0.04
@@ -39,7 +46,7 @@ forestLabels = performIsolationForestAnomalyDetection(dataset, nu)
 lofLabels = performLOFAnomalyDetection(dataset, neighborhood_order, nu)
 
 # GMM Outlier Detection
-gmmLabels = performGMMAnomalyDetection(dataset, 11, nu)
+# gmmLabels = performGMMAnomalyDetection(dataset, 11, nu)
 
 # KNEE Outlier Detection
 kneeLabels = performNNKNEEAnomalyDetection(dataset, neighborhood_order)

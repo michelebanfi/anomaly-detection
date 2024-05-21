@@ -12,7 +12,6 @@ PAL = ['green', 'blue', 'yellow', 'orange', 'purple', 'magenta', 'cyan', 'brown'
 
 def loadDataset():
     path = "Data/dataset.csv"
-
     # Load dataset
     dataset = pd.read_csv(path, sep=";", decimal=",")
     dataset = dataset.iloc[:, 1:-2]
@@ -81,14 +80,14 @@ def plotOutliersFrequency(df):
     fig, axs = plt.subplots(2, figsize=(20, 20))
 
     # Plot histogram
-    axs[0].hist(df['Outliers'], bins=len(levels), density=True)
+    sns.histplot(df['Outliers'], bins=len(levels), ax=axs[0])
     axs[0].set_title('Outliers')
     axs[0].set_xlabel('Outliers')
     axs[0].set_ylabel('Frequency')
 
     # Plot pie chart
     sizes = [len(df[df['Outliers'] == level]) for level in levels]
-    axs[1].pie(sizes, labels=levels, autopct='%1.1f%%')
+    axs[1].pie(sizes, labels=levels, autopct='%1.1f%%', colors = sns.color_palette('magma_r', len(levels)))
 
     plt.tight_layout()
     plt.savefig("Media/outliersFrequency.png")

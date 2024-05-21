@@ -5,7 +5,6 @@ import seaborn as sns
 def descriptiveStats(dataset):
     print("[DATASET HEAD]", dataset.head())
     print("[DATASET DESCRIBE]", dataset.describe())
-    dataset.head().to_latex("Media/head.tex")
 
     # plot a histogram for each binary column on a big figure
     plt.figure(figsize=(25, 25))
