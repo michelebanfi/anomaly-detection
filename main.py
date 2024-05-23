@@ -30,19 +30,19 @@ dbscanLabels = performDBSCANAnomalyDetection(dataset, neighborhood_order)
 svmLabelsOneHotEncode = performSVMAnomalyDetectionOneHotEncoder(dataset, nu)
 
 # perform svm anomaly detection with gower distance
-svmLabelsGower = performSVMAnomalyDetectionGower(dataset, nu)
+# svmLabelsGower = performSVMAnomalyDetectionGower(dataset, nu)
 
 # IsolationForest
 forestLabels = performIsolationForestAnomalyDetection(dataset, nu)
 
 # Local Outlier Factor
-lofLabels = performLOFAnomalyDetection(dataset, neighborhood_order, nu)
+# lofLabels = performLOFAnomalyDetection(dataset, neighborhood_order, nu)
 
 # GMM Outlier Detection
-gmmLabels = performGMMAnomalyDetection(dataset, 11, nu)
+# gmmLabels = performGMMAnomalyDetection(dataset, 11, nu)
 
 # KNEE Outlier Detection
-kneeLabels = performNNKNEEAnomalyDetection(dataset, neighborhood_order)
+# kneeLabels = performNNKNEEAnomalyDetection(dataset, neighborhood_order)
 
 # PCA Outlier Detection
 pcaLabels = performPCAAnomalyDetection(dataset, 6)
@@ -72,8 +72,6 @@ df["Outliers"] = df.mean(axis=1).round(2).abs()
 # plot the t-SNE plot
 TSNEPlot(dataset, df["Outliers"])
 
-df.to_csv("Data/outliers.csv", index=False)
-
 # plot the frequency of outliers
 plotOutliersFrequency(df)
 
@@ -81,3 +79,18 @@ plotOutliersFrequency(df)
 print("Found that", len(df[df["Outliers"] == 0]),
       "observations are not considered outliers by any algorithm. Corresponding to the",
       np.round((len(df[df["Outliers"] == 0]) / len(dataset)) * 100, 2), "% of the dataset.")
+
+# take a sharp boundarie to consider an observation as an outlier
+threshold = 0.6
+
+# create a new column where we flag the observations that have value greater than the threshold
+df["SharpOutliers"] = df["Outliers"].apply(lambda x: -1 if x > threshold else 0)
+
+# print the number of instances that are considered outliers by the sharp boundary
+print("Found that", len(df[df["SharpOutliers"] == -1]),
+      "observations are considered outliers by the sharp boundary. Corresponding to the",
+      np.round((len(df[df["SharpOutliers"] == -1]) / len(dataset)) * 100, 2), "% of the dataset.")
+
+df.to_csv("Data/outliers.csv", index=False)
+
+TSNEPlot(dataset, df["SharpOutliers"], "Media/tsneSharp.png")

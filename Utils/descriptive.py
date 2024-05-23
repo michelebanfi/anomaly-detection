@@ -15,7 +15,7 @@ def descriptiveStats(dataset):
             sns.histplot(dataset[column], bins=2)
             plt.title(column)
     plt.tight_layout()
-    plt.savefig("Media/binaryDistribution.png")
+    plt.savefig("Media/binaryDistribution.png", bbox_inches='tight')
     plt.close()
 
     # plot a boxplot for each continuous column on a big figure having 3 rows and 3 columns
@@ -29,7 +29,7 @@ def descriptiveStats(dataset):
             plt.title(column)
             counter += 1
     plt.tight_layout()
-    plt.savefig("Media/continuousDistributionBoxPlot.png")
+    plt.savefig("Media/continuousDistributionBoxPlot.png", bbox_inches='tight')
     plt.close()
 
     # plot the continuos variables distribution
@@ -43,7 +43,7 @@ def descriptiveStats(dataset):
             plt.title(column)
             counter += 1
     plt.tight_layout()
-    plt.savefig("Media/continuousDistributionGaussian.png")
+    plt.savefig("Media/continuousDistributionGaussian.png", bbox_inches='tight')
     plt.close()
 
     # plot the scatter matrix of the dataset

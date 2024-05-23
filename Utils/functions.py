@@ -17,16 +17,21 @@ def loadDataset():
     dataset = dataset.iloc[:, 1:-2]
     return dataset
 
-def TSNEPlot(dataset, labels):
+def TSNEPlot(dataset, labels, path="Media/tsne.png"):
     dist_matrix = gower.gower_matrix(dataset)
-    tsne = TSNE(n_components=2, verbose=0, perplexity=20, n_iter=1000, metric="precomputed", init='random')
+    tsne = TSNE(n_components=2, verbose=0, perplexity=20, n_iter=1000, metric="precomputed", init='random', random_state=42)
     tsne_results = tsne.fit_transform(dist_matrix)
+
+    if len(set(labels)) == 2:
+        palette = ["#6E1F81", "#FCA06E"]
+    else:
+        palette = "plasma_r"
 
     # create a big figure
     plt.figure(figsize=(20, 15))
-    sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette="plasma_r", legend='full')
+    sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette=palette, legend='full')
     plt.tight_layout()
-    plt.savefig("Media/tsne.png")
+    plt.savefig(path)
     plt.close()
 
 def gridSearchDBSCAN(dist_matrix, min_samples, eps):
