@@ -1,7 +1,7 @@
 import numpy as np
 from gower import gower_matrix
 from sklearn.decomposition import PCA
-from kneed import KneeLocator
+from scipy.stats import chi2
 
 
 def performPCAAnomalyDetection(dataset, NCOMPONENTS):
@@ -31,7 +31,6 @@ def performPCAAnomalyDetection(dataset, NCOMPONENTS):
     pcaLabels = np.zeros(len(dataset))
     pcaLabels[outliers] = -1
 
-    from scipy.stats import chi2
     alpha = 0.99
     chi2_th = chi2.ppf(alpha, NCOMPONENTS)
 

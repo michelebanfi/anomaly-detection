@@ -1,3 +1,4 @@
+import gower
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -44,6 +45,14 @@ def descriptiveStats(dataset):
             counter += 1
     plt.tight_layout()
     plt.savefig("Media/continuousDistributionGaussian.png", bbox_inches='tight')
+    plt.close()
+
+    # plot the distance matrix
+    dist_matrix = gower.gower_matrix(dataset)
+    plt.figure(figsize=(20, 20))
+    sns.heatmap(dist_matrix, cmap='plasma_r')
+    plt.tight_layout()
+    plt.savefig("Media/distanceMatrix.png")
     plt.close()
 
     # plot the scatter matrix of the dataset
