@@ -1,11 +1,10 @@
-import os
 import gower
 import numpy as np
 import pandas as pd
 from sklearn.manifold import TSNE
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.metrics import silhouette_score, rand_score, adjusted_rand_score
+from sklearn.metrics import silhouette_score, rand_score
 from sklearn.cluster import DBSCAN
 
 PAL = ['green', 'blue', 'yellow', 'orange', 'purple', 'magenta', 'cyan', 'brown', 'black', 'red']
@@ -31,10 +30,10 @@ def TSNEPlot(dataset, labels, path="Media/tsne.png"):
 
     # create a big figure with a white background
     plt.figure(figsize=(20, 15))
-    sns.set(font_scale=3)
+    #sns.set(font_scale=3)
     sns.set_style("whitegrid", {'axes.grid': False})
     sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], palette=palette, hue=labels, legend='full')
-    plt.legend(title=title, loc='upper right')
+    plt.legend(title=title, loc='upper right', prop = {'size': 20})
     plt.tight_layout()
     plt.savefig(path)
     plt.close()
@@ -56,8 +55,6 @@ def gridSearchDBSCAN(dist_matrix, min_samples, eps):
                 best_min_samples = sample
     plt.plot(silhouette_scores)
     return best_eps, best_min_samples, best_score
-
-
 
 def randScore(dataframe):
     print("Calculating the rand matrix...")

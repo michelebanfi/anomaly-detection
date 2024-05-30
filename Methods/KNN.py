@@ -18,10 +18,8 @@ def performNNKNEEAnomalyDetection(dataset, neighborhood_order=10):
     # y coordinate of the knee point
     knee_y = 1.2
 
-    print('[KNEE] The estimated best eps value is = %.2f' % knee_y, knee_x)
-
     outliers = np.where(distances[:, neighborhood_order - 1] > knee_y)[0]
-    print('[KNEE] Founded', len(outliers), "outliers")
+    print('[KNN] Founded', len(outliers), "outliers")
 
     # Assign labels
     kneeLabels = np.zeros(len(dataset))

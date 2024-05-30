@@ -15,9 +15,6 @@ def descriptiveStats(dataset):
             plt.subplot(5, 5, list(dataset.columns).index(column))
             sns.countplot(x=column, data=dataset)
             plt.title(column)
-            # plt.subplot(5, 5, list(dataset.columns).index(column))
-            # sns.histplot(dataset[column], bins=2)
-            # plt.title(column)
 
     plt.tight_layout()
     plt.savefig("Media/binaryDistribution.png", bbox_inches='tight')
@@ -58,7 +55,3 @@ def descriptiveStats(dataset):
     plt.tight_layout()
     plt.savefig("Media/distanceMatrix.png")
     plt.close()
-
-    # plot the scatter matrix of the dataset
-    # print("[SCATTER MATRIX]")
-    # pd.plotting.scatter_matrix(dataset, figsize=(40, 40))

@@ -18,8 +18,8 @@ def performPCAAnomalyDetection(dataset, NCOMPONENTS):
     X_reconstructed = pca.inverse_transform(pca_results)
     RE = np.linalg.norm(gower_dist_matrix - X_reconstructed, axis=1)
 
-    alpha = 0.95
-    chi2_th = chi2.ppf(alpha, NCOMPONENTS)
+    alpha = 0.05
+    chi2_th = chi2.ppf(1 - alpha, NCOMPONENTS)
 
     # Identify the outliers
     pcaLabelsChi = np.zeros(len(dataset))
@@ -28,7 +28,6 @@ def performPCAAnomalyDetection(dataset, NCOMPONENTS):
         if np.sum(pca_results[i, :] ** 2 / lambdas) > chi2_th:
             pcaLabelsChi[i] = -1
 
-    print('[PCA] founded', len(np.where(pcaLabelsChi == -1)[0]), "outliers",
-          round(len(np.where(pcaLabelsChi == -1)[0]) / 7200, 2) * 100, "%")
+    print('[PCA] founded', len(np.where(pcaLabelsChi == -1)[0]), "outliers")
 
     return pcaLabelsChi

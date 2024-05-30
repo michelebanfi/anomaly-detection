@@ -1,15 +1,11 @@
 import numpy as np
 import pandas as pd
-from Methods.GMM import performGMMAnomalyDetection
 from Methods.PCA import performPCAAnomalyDetection
 from Methods.forest import performIsolationForestAnomalyDetection
 from Utils.descriptive import descriptiveStats
 from Utils.functions import loadDataset, TSNEPlot, randScore, plotOutliersFrequency
-from Methods.kde import performKDEAnomalyDetectionOneHotEncoder
-from Methods.knee import performNNKNEEAnomalyDetection
-from Methods.lof import performLOFAnomalyDetection
-from Methods.svm import performSVMAnomalyDetectionOneHotEncoder, performSVMAnomalyDetectionGower
-from Methods.dbscan import performDBSCANAnomalyDetection
+from Methods.KNN import performNNKNEEAnomalyDetection
+from Methods.DBSCAN import performDBSCANAnomalyDetection
 
 # Load the dataset
 dataset = loadDataset()
@@ -26,20 +22,8 @@ neighborhood_order = 10
 # perform dbscan anomaly detection
 dbscanLabels = performDBSCANAnomalyDetection(dataset, neighborhood_order)
 
-# perform svm anomaly detection with one hot encoder
-# svmLabelsOneHotEncode = performSVMAnomalyDetectionOneHotEncoder(dataset, nu)
-
-# perform svm anomaly detection with gower distance
-# svmLabelsGower = performSVMAnomalyDetectionGower(dataset, nu)
-
 # IsolationForest
 forestLabels = performIsolationForestAnomalyDetection(dataset, nu)
-
-# Local Outlier Factor
-# lofLabels = performLOFAnomalyDetection(dataset, neighborhood_order, nu)
-
-# GMM Outlier Detection
-# gmmLabels = performGMMAnomalyDetection(dataset, 11, nu)
 
 # KNEE Outlier Detection
 kneeLabels = performNNKNEEAnomalyDetection(dataset, neighborhood_order)
@@ -47,27 +31,18 @@ kneeLabels = performNNKNEEAnomalyDetection(dataset, neighborhood_order)
 # PCA Outlier Detection
 pcaLabels = performPCAAnomalyDetection(dataset, 10)
 
-# KDE Outlier Detection with OneHotEncoder
-# kdeLabels = performKDEAnomalyDetectionOneHotEncoder(dataset,nu)
-
 # create a dataframe with the labels
 df = pd.DataFrame({
     "DBSCAN": dbscanLabels,
-    #"SVM": svmLabelsGower,
-    #"SVMGower": svmLabelsGower,
     "IsolationForest": forestLabels,
-    #"LOF": lofLabels,
-    #"GMM": gmmLabels,
-    "KNEE": kneeLabels,
+    "KNN": kneeLabels,
     "PCA": pcaLabels,
-    #"KDE": kdeLabels
 })
 
 randScore(df)
 
 # create a new column where we insert the mean of outliers per row
 df["Outliers"] = df.mean(axis=1).round(2).abs()
-
 
 # plot the t-SNE plot
 TSNEPlot(dataset, df["Outliers"])
@@ -94,3 +69,14 @@ print("Found that", len(df[df["SharpOutliers"] == -1]),
 df.to_csv("Data/outliers.csv", index=False)
 
 TSNEPlot(dataset, df["SharpOutliers"], "Media/tsneSharp.png")
+
+# add a column to the dataset representing the outlier probability
+dataset["OutlierProbability"] = df["Outliers"]
+
+dataset.to_csv("Data/datasetWithOutliers.csv", index=False)
+
+
+
+
+
+

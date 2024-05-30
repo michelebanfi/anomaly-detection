@@ -1,7 +1,5 @@
 import numpy as np
-from kneed import KneeLocator
 from sklearn.cluster import DBSCAN
-from sklearn.neighbors import NearestNeighbors as knn
 import gower
 
 def performDBSCANAnomalyDetection(dataset, neighborhood_order):
