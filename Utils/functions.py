@@ -33,7 +33,7 @@ def TSNEPlot(dataset, labels, path="Media/tsne.png"):
     #sns.set(font_scale=3)
     sns.set_style("whitegrid", {'axes.grid': False})
     sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], palette=palette, hue=labels, legend='full')
-    plt.legend(title=title, loc='upper right', prop = {'size': 20})
+    plt.legend(title=title, loc='upper right', markerscale=5, title_fontsize = 30 ,prop = {'size': 30})
     plt.tight_layout()
     plt.savefig(path)
     plt.close()
