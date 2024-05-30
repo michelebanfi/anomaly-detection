@@ -18,7 +18,7 @@ dataset = loadDataset()
 descriptiveStats(dataset)
 
 # Percentage of outliers
-nu = 0.04
+nu = 0.05
 
 # neighborhood order of different algorithms
 neighborhood_order = 10
@@ -27,7 +27,7 @@ neighborhood_order = 10
 dbscanLabels = performDBSCANAnomalyDetection(dataset, neighborhood_order)
 
 # perform svm anomaly detection with one hot encoder
-svmLabelsOneHotEncode = performSVMAnomalyDetectionOneHotEncoder(dataset, nu)
+# svmLabelsOneHotEncode = performSVMAnomalyDetectionOneHotEncoder(dataset, nu)
 
 # perform svm anomaly detection with gower distance
 # svmLabelsGower = performSVMAnomalyDetectionGower(dataset, nu)
@@ -42,25 +42,25 @@ forestLabels = performIsolationForestAnomalyDetection(dataset, nu)
 # gmmLabels = performGMMAnomalyDetection(dataset, 11, nu)
 
 # KNEE Outlier Detection
-# kneeLabels = performNNKNEEAnomalyDetection(dataset, neighborhood_order)
+kneeLabels = performNNKNEEAnomalyDetection(dataset, neighborhood_order)
 
 # PCA Outlier Detection
-pcaLabels = performPCAAnomalyDetection(dataset, 6)
+pcaLabels = performPCAAnomalyDetection(dataset, 10)
 
 # KDE Outlier Detection with OneHotEncoder
-kdeOneHotEncoderLabels = performKDEAnomalyDetectionOneHotEncoder(dataset,nu)
+# kdeLabels = performKDEAnomalyDetectionOneHotEncoder(dataset,nu)
 
 # create a dataframe with the labels
 df = pd.DataFrame({
     "DBSCAN": dbscanLabels,
-    "SVMOneHotEncode": svmLabelsOneHotEncode,
+    #"SVM": svmLabelsGower,
     #"SVMGower": svmLabelsGower,
     "IsolationForest": forestLabels,
     #"LOF": lofLabels,
     #"GMM": gmmLabels,
-    #"KNEE": kneeLabels,
+    "KNEE": kneeLabels,
     "PCA": pcaLabels,
-    "KDEOneHotEncoder": kdeOneHotEncoderLabels
+    #"KDE": kdeLabels
 })
 
 randScore(df)
@@ -80,7 +80,7 @@ print("Found that", len(df[df["Outliers"] == 0]),
       "observations are not considered outliers by any algorithm. Corresponding to the",
       np.round((len(df[df["Outliers"] == 0]) / len(dataset)) * 100, 2), "% of the dataset.")
 
-# take a sharp boundarie to consider an observation as an outlier
+# take a sharp boundary to consider an observation as an outlier
 threshold = 0.6
 
 # create a new column where we flag the observations that have value greater than the threshold

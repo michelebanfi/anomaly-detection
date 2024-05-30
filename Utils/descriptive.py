@@ -11,10 +11,14 @@ def descriptiveStats(dataset):
     plt.figure(figsize=(25, 25))
     for column in dataset.columns:
         if column.endswith("=0"):
-            # plot the histogram of the column
+            # plot the histogram of the column with the class on the x-axis
             plt.subplot(5, 5, list(dataset.columns).index(column))
-            sns.histplot(dataset[column], bins=2)
+            sns.countplot(x=column, data=dataset)
             plt.title(column)
+            # plt.subplot(5, 5, list(dataset.columns).index(column))
+            # sns.histplot(dataset[column], bins=2)
+            # plt.title(column)
+
     plt.tight_layout()
     plt.savefig("Media/binaryDistribution.png", bbox_inches='tight')
     plt.close()

@@ -24,12 +24,17 @@ def TSNEPlot(dataset, labels, path="Media/tsne.png"):
 
     if len(set(labels)) == 2:
         palette = ["#6E1F81", "#FCA06E"]
+        title = "Outliers Score"
     else:
         palette = "plasma_r"
+        title = "Outliers"
 
-    # create a big figure
+    # create a big figure with a white background
     plt.figure(figsize=(20, 15))
-    sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], hue=labels, palette=palette, legend='full')
+    sns.set(font_scale=3)
+    sns.set_style("whitegrid", {'axes.grid': False})
+    sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], palette=palette, hue=labels, legend='full')
+    plt.legend(title=title, loc='upper right')
     plt.tight_layout()
     plt.savefig(path)
     plt.close()
@@ -71,9 +76,10 @@ def randScore(dataframe):
             # calculate the rand score
             rand_matrix[i, j] = rand_score(labels1, labels2)
 
-    # plot the rand matrix with the labels of the algorithms
+    # plot the rand matrix with the labels of the algorithms with a bigger font size
     plt.figure(figsize=(20, 15))
-    sns.heatmap(rand_matrix, annot=True, xticklabels=cols, yticklabels=cols, cmap="magma")
+    sns.set(font_scale=1.6)
+    sns.heatmap(rand_matrix, annot=True, xticklabels=cols, yticklabels=cols, cmap="magma", fmt=".2f")
     plt.tight_layout()
     plt.savefig("Media/rand_matrix.png")
     plt.close()
@@ -85,7 +91,7 @@ def plotOutliersFrequency(df):
     levels = set(df['Outliers'])
 
     fig, axs = plt.subplots(2, figsize=(20, 20))
-
+    sns.set(font_scale=2.2)
     # Plot histogram
     sns.histplot(df['Outliers'], bins=len(levels), ax=axs[0])
     axs[0].set_title('Outliers')
@@ -98,10 +104,10 @@ def plotOutliersFrequency(df):
     palette = palette[:-1]
     axs[1].pie(sizes, labels=levels, autopct='%1.1f%%', colors=palette)
 
+    sns.set_style("whitegrid", {'axes.grid': False})
     plt.tight_layout()
     plt.savefig("Media/outliersFrequency.png")
     plt.close()
-
 
 def pandas_to_typst(df):
     #USAGE: print(pandas_to_typst(df))
