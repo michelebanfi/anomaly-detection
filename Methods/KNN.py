@@ -3,7 +3,14 @@ import numpy as np
 from kneed import KneeLocator
 from sklearn.neighbors import NearestNeighbors as knn
 
-def performNNKNEEAnomalyDetection(dataset, neighborhood_order=10):
+def performNNKNEEAnomalyDetection(dataset, neighborhood_order):
+    """
+    This function performs the KNN algorithm to detect anomalies in the dataset
+    :param dataset: the dataset from which perform the anomaly detection
+    :param neighborhood_order: the neighborhood order for the DBSCAN algorithm
+    :return: observation labels, where -1 is an outlier and 0 is not an outlier
+    """
+
     dist_matrix = gower.gower_matrix(dataset)
     # Apply the algorithm
     neighborhood_set = knn(n_neighbors=neighborhood_order).fit(dist_matrix)

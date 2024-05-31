@@ -13,22 +13,22 @@ dataset = loadDataset()
 # description of the dataset
 descriptiveStats(dataset)
 
-# Percentage of outliers
+# Percentage of estimated outliers.
 nu = 0.05
 
-# neighborhood order of different algorithms
+# Neighborhood order of different algorithms
 neighborhood_order = 10
 
 # perform dbscan anomaly detection
 dbscanLabels = performDBSCANAnomalyDetection(dataset, neighborhood_order)
 
-# IsolationForest
+# perform IsolationForest anomaly detection
 forestLabels = performIsolationForestAnomalyDetection(dataset, nu)
 
-# KNEE Outlier Detection
+# perform KNEE Outlier Detection
 kneeLabels = performNNKNEEAnomalyDetection(dataset, neighborhood_order)
 
-# PCA Outlier Detection
+# perform PCA Outlier Detection
 pcaLabels = performPCAAnomalyDetection(dataset, 10)
 
 # create a dataframe with the labels

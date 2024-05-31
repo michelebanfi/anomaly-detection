@@ -1,9 +1,14 @@
 import gower
-import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 def descriptiveStats(dataset):
+    """
+    This function calculates the descriptive statistics of a given dataset
+    :param dataset: the dataset to analyze
+    :return: None
+    """
+
     print("[DATASET HEAD]", dataset.head())
     print("[DATASET DESCRIBE]", dataset.describe())
 

@@ -7,16 +7,23 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import silhouette_score, rand_score
 from sklearn.cluster import DBSCAN
 
-PAL = ['green', 'blue', 'yellow', 'orange', 'purple', 'magenta', 'cyan', 'brown', 'black', 'red']
-
+# method to load the dataset
 def loadDataset():
     path = "Data/dataset.csv"
-    # Load dataset
+
     dataset = pd.read_csv(path, sep=";", decimal=",")
     dataset = dataset.iloc[:, 1:-2]
     return dataset
 
 def TSNEPlot(dataset, labels, path="Media/tsne.png"):
+    """
+    This function performs the TSNE algorithm to plot the dataset
+    :param dataset: the dataset to plot
+    :param neighborhood_order: the labels in the dataset
+    :param path: the path where to save the plot
+    :return: None
+    """
+
     dist_matrix = gower.gower_matrix(dataset)
     tsne = TSNE(n_components=2, verbose=0, perplexity=20, n_iter=1000, metric="precomputed", init='random', random_state=42)
     tsne_results = tsne.fit_transform(dist_matrix)
@@ -38,25 +45,13 @@ def TSNEPlot(dataset, labels, path="Media/tsne.png"):
     plt.savefig(path)
     plt.close()
 
-def gridSearchDBSCAN(dist_matrix, min_samples, eps):
-    silhouette_scores = []
-    best_score = -1
-    best_eps = 0
-    best_min_samples = 0
-    for eps in eps:
-        for sample in min_samples:
-            db = DBSCAN(eps = eps, min_samples = sample, metric = "precomputed").fit(dist_matrix)
-            labels = db.labels_
-            silhouette = silhouette_score(dist_matrix, labels, metric='precomputed')
-            silhouette_scores.append(silhouette)
-            if silhouette > best_score:
-                best_score = silhouette
-                best_eps = eps
-                best_min_samples = sample
-    plt.plot(silhouette_scores)
-    return best_eps, best_min_samples, best_score
-
 def randScore(dataframe):
+    """
+    This function calculates the rand matrix on a given dataset and plots it
+    :param dataset: the dataset containing the labels
+    :return: None
+    """
+
     print("Calculating the rand matrix...")
     # calculate the rand score of multiple algorithms saved in columns of a pandas dataframe
     # get the number of columns
@@ -82,6 +77,12 @@ def randScore(dataframe):
     plt.close()
 
 def plotOutliersFrequency(df):
+    """
+    This function plots the frequency of the outliers in the dataset
+    :param df: dataframe containing the labels
+    :return: None
+    """
+
     # remove from the Outliers column the value 0
     df = df[df["Outliers"] != 0]
 
@@ -107,7 +108,11 @@ def plotOutliersFrequency(df):
     plt.close()
 
 def pandas_to_typst(df):
-    #USAGE: print(pandas_to_typst(df))
+    """
+    Custom function to convert a pandas dataframe to a typst table
+    :param dataset: the dataframe to plot
+    :return: None
+    """
 
     typst_text = "\n#table(\n"
 

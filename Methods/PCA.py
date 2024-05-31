@@ -4,6 +4,13 @@ from sklearn.decomposition import PCA
 from scipy.stats import chi2
 
 def performPCAAnomalyDetection(dataset, NCOMPONENTS):
+    """
+    This function performs the PCA algorithm to detect anomalies in the dataset
+    :param dataset: the dataset from which perform the anomaly detection
+    :param NCOMPONENTS: the number of components to reduce the dataset
+    :return: observation labels, where -1 is an outlier and 0 is not an outlier
+    """
+
     # Compute Gower distance matrix for the entire dataset
     gower_dist_matrix = gower_matrix(dataset)
 
