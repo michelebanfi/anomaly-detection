@@ -30,11 +30,13 @@ def descriptiveStats(dataset):
     counter = 1
     for column in dataset.columns:
         if not column.endswith("=0"):
+
             # plot the boxplot of the column
             plt.subplot(3, 3, counter)
             sns.boxplot(y=dataset[column])
             plt.title(column)
             counter += 1
+
     plt.tight_layout()
     plt.savefig("Media/continuousDistributionBoxPlot.png", bbox_inches='tight')
     plt.close()
@@ -44,11 +46,13 @@ def descriptiveStats(dataset):
     counter = 1
     for column in dataset.columns:
         if not column.endswith("=0"):
+
             # plot the distribution of the column
             plt.subplot(3, 3, counter)
             sns.histplot(dataset[column], kde=True)
             plt.title(column)
             counter += 1
+
     plt.tight_layout()
     plt.savefig("Media/continuousDistributionGaussian.png", bbox_inches='tight')
     plt.close()

@@ -9,8 +9,11 @@ def performIsolationForestAnomalyDetection(dataset, nu):
     :return: observation labels, where -1 is an outlier and 0 is not an outlier
     """
 
+    # perform the Isolation Forest algorithm
     forest = IsolationForest(contamination = nu)
     labels = forest.fit_predict(dataset)
     print("[ISOLATION FOREST] Founded", len(np.where(labels == -1)[0]), "outliers")
+
+    # assign only two labels: 0 for not outliers and -1 for outliers
     labels = np.where(labels == -1, -1, 0)
     return labels

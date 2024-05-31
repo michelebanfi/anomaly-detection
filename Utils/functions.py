@@ -4,40 +4,46 @@ import pandas as pd
 from sklearn.manifold import TSNE
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.metrics import silhouette_score, rand_score
-from sklearn.cluster import DBSCAN
+from sklearn.metrics import rand_score
 
 # method to load the dataset
-def loadDataset():
-    path = "Data/dataset.csv"
+def loadDataset(path):
+    """
+    This function loads the dataset and returns it
+    :param path: the path of the dataset
+    :return: dataset
+    """
 
+    # load the dataset with the correct separator and decimal
     dataset = pd.read_csv(path, sep=";", decimal=",")
+
+    # remove the first column and the last two columns since the first one is the index and the last two are empty
     dataset = dataset.iloc[:, 1:-2]
     return dataset
 
-def TSNEPlot(dataset, labels, path="Media/tsne.png"):
+def TSNEPlot(dist_matrix, labels, path="Media/tsne.png"):
     """
     This function performs the TSNE algorithm to plot the dataset
-    :param dataset: the dataset to plot
+    :param dist_matrix: the distance matrix of the dataset
     :param neighborhood_order: the labels in the dataset
     :param path: the path where to save the plot
     :return: None
     """
 
-    dist_matrix = gower.gower_matrix(dataset)
+    # perform the TSNE algorithm
     tsne = TSNE(n_components=2, verbose=0, perplexity=20, n_iter=1000, metric="precomputed", init='random', random_state=42)
     tsne_results = tsne.fit_transform(dist_matrix)
 
+    # create the palette and the title of the plot based on the number of labels (outliers score or sharp labels)
     if len(set(labels)) == 2:
         palette = ["#6E1F81", "#FCA06E"]
-        title = "Outliers Score"
+        title = "Outliers"
     else:
         palette = "plasma_r"
-        title = "Outliers"
+        title = "Outlier Score"
 
-    # create a big figure with a white background
+    # plotting
     plt.figure(figsize=(20, 15))
-    #sns.set(font_scale=3)
     sns.set_style("whitegrid", {'axes.grid': False})
     sns.scatterplot(x=tsne_results[:, 0], y=tsne_results[:, 1], palette=palette, hue=labels, legend='full')
     plt.legend(title=title, loc='upper right', markerscale=5, title_fontsize = 30 ,prop = {'size': 30})
@@ -47,28 +53,32 @@ def TSNEPlot(dataset, labels, path="Media/tsne.png"):
 
 def randScore(dataframe):
     """
-    This function calculates the rand matrix on a given dataset and plots it
+    This function calculates the rand matrix on a given dataframe and plots it
     :param dataset: the dataset containing the labels
     :return: None
     """
 
     print("Calculating the rand matrix...")
-    # calculate the rand score of multiple algorithms saved in columns of a pandas dataframe
+
     # get the number of columns
     cols = dataframe.columns
     n = len(cols)
+
     # create a matrix to store the rand scores
     rand_matrix = np.zeros((n, n))
+
     # iterate over the columns
     for i in range(n):
         for j in range(n):
+
             # get the labels
             labels1 = dataframe[cols[i]]
             labels2 = dataframe[cols[j]]
+
             # calculate the rand score
             rand_matrix[i, j] = rand_score(labels1, labels2)
 
-    # plot the rand matrix with the labels of the algorithms with a bigger font size
+    # plotting
     plt.figure(figsize=(20, 15))
     sns.set(font_scale=1.6)
     sns.heatmap(rand_matrix, annot=True, xticklabels=cols, yticklabels=cols, cmap="magma", fmt=".2f")
@@ -86,17 +96,19 @@ def plotOutliersFrequency(df):
     # remove from the Outliers column the value 0
     df = df[df["Outliers"] != 0]
 
+    # get the levels of the outliers
     levels = set(df['Outliers'])
 
     fig, axs = plt.subplots(2, figsize=(20, 20))
     sns.set(font_scale=2.2)
-    # Plot histogram
+
+    # plot the histogram
     sns.histplot(df['Outliers'], bins=len(levels), ax=axs[0])
     axs[0].set_title('Outliers')
     axs[0].set_xlabel('Outliers')
     axs[0].set_ylabel('Frequency')
 
-    # Plot pie chart
+    # plot the pie chart
     sizes = [len(df[df['Outliers'] == level]) for level in levels]
     palette = sns.color_palette("magma_r", len(levels) + 2)
     palette = palette[:-1]
