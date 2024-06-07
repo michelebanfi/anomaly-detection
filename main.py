@@ -9,13 +9,18 @@ from Methods.KNN import performNNKNEEAnomalyDetection
 from Methods.DBSCAN import performDBSCANAnomalyDetection
 
 # load the dataset
-dataset = loadDataset(path = "Data/dataset.csv")
+# dataset = loadDataset(path = "Data/dataset.csv")
+dataset = pd.read_csv("Data/data2_preprocessed.csv")
+
+# remove true labels from the dataset and save them in a separate variable
+trueLabels = dataset["anomalies"]
+dataset = dataset.drop(columns=["anomalies"])
 
 # compute the Gower distance matrix here, since is used by 3 algorithms
 dist_matrix = gower.gower_matrix(dataset)
 
 # description of the dataset
-descriptiveStats(dataset)
+# descriptiveStats(dataset)
 
 # percentage of estimated outliers.
 nu = 0.05
@@ -72,7 +77,7 @@ print("Found that", len(df[df["SharpOutliers"] == -1]),
       np.round((len(df[df["SharpOutliers"] == -1]) / len(dataset)) * 100, 2), "% of the dataset.")
 
 # save the outliers in a csv file
-df.to_csv("Data/outliers.csv", index=False)
+df.to_csv("Data/BENCHMARK_outliers.csv", index=False)
 
 # plot the t-SNE plot with the sharp boundary
 TSNEPlot(dist_matrix, df["SharpOutliers"], "Media/tsneSharp.png")
@@ -81,7 +86,7 @@ TSNEPlot(dist_matrix, df["SharpOutliers"], "Media/tsneSharp.png")
 dataset["OutlierProbability"] = df["Outliers"]
 
 # save the original dataset with the outlier probability
-dataset.to_csv("Data/datasetWithOutliers.csv", index=False)
+dataset.to_csv("Data/BENCHMARK_datasetWithOutliers.csv", index=False)
 
 
 

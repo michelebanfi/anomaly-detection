@@ -4,7 +4,8 @@ import pandas as pd
 from sklearn.manifold import TSNE
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.metrics import rand_score
+from sklearn.metrics import rand_score, jaccard_score
+
 
 # method to load the dataset
 def loadDataset(path):
@@ -58,7 +59,7 @@ def randScore(dataframe):
     :return: None
     """
 
-    print("Calculating the rand matrix...")
+    print("Calculating the Jaccard matrix...")
 
     # get the number of columns
     cols = dataframe.columns
@@ -66,6 +67,7 @@ def randScore(dataframe):
 
     # create a matrix to store the rand scores
     rand_matrix = np.zeros((n, n))
+    jaccard_matrix = np.zeros((n, n))
 
     # iterate over the columns
     for i in range(n):
@@ -78,7 +80,17 @@ def randScore(dataframe):
             # calculate the rand score
             rand_matrix[i, j] = rand_score(labels1, labels2)
 
+            # calculate the Jaccaard score
+            jaccard_matrix[i, j] = jaccard_score(labels1, labels2, average="binary", pos_label=-1)
+
     # plotting
+    plt.figure(figsize=(20, 15))
+    sns.set(font_scale=1.6)
+    sns.heatmap(jaccard_matrix, annot=True, xticklabels=cols, yticklabels=cols, cmap="viridis", fmt=".2f")
+    plt.tight_layout()
+    plt.savefig("Media/jaccard_matrix.png")
+    plt.close()
+
     plt.figure(figsize=(20, 15))
     sns.set(font_scale=1.6)
     sns.heatmap(rand_matrix, annot=True, xticklabels=cols, yticklabels=cols, cmap="magma", fmt=".2f")
