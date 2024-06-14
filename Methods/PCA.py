@@ -15,7 +15,7 @@ def performPCAAnomalyDetection(dist_matrix, NCOMPONENTS):
     pca_results = pca.fit_transform(dist_matrix)
 
     # print the PCA explained variance ratio summed
-    print('[PCA] Explained variance ratio up to the' + str(NCOMPONENTS) + '-th component: ', np.sum(pca.explained_variance_ratio_))
+    print('[PCA] Explained variance ratio up to the ' + str(NCOMPONENTS) + '-th component: ', np.sum(pca.explained_variance_ratio_))
 
     alpha = 0.05
     chi2_th = chi2.ppf(1 - alpha, NCOMPONENTS)
