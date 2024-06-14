@@ -20,7 +20,7 @@ dataset = dataset.drop(columns=["anomalies"])
 dist_matrix = gower.gower_matrix(dataset)
 
 # description of the dataset
-# descriptiveStats(dataset)
+descriptiveStats(dataset)
 
 # percentage of estimated outliers.
 nu = 0.05
