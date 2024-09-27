@@ -1,5 +1,7 @@
 # Anomaly Detection for Hypertirodism
 
+> The report is available at `Report - Anomaly Detection.pdf`
+
 Install the required libraries by running the following command:
 
 ```bash
